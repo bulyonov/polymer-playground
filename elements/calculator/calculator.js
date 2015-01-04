@@ -14,7 +14,7 @@
      *
      * All operators can have one or two arguments. Depending on the amount of arguments, the way how they are executed
      * is different: binary operators are executed only after the second argument is added and the next operator is
-     * picked. Unary operators (e.g. sqrt) should be executed immediately.
+     * picked. Unary operators (e.g. sqrt) should be executed immediately using the value which is currently shown.
      *
      * Thus, we need to work with these operators separately.
      */
@@ -52,22 +52,45 @@
         {
             action: '=',
             binary: false,
+            finish: true,
             callback: function (a) { return a; }
         }
     ];
 
-    var result = 0;
+    /**
+     * The result of last calculation.
+     */
+    var lastEvaluationResult = 0;
+
+    /**
+     * The value to display.
+     */
     var displayedValue = '0';
+
+    /**
+     * True if the number is new (e.g. when the input should be restarted).
+     */
     var newNumber = true;
+
+    /**
+     * Last operator. Object or null.
+     */
     var lastOperator = null;
+
+    /**
+     * Current operator. Object or null.
+     */
     var currentOperator = null;
 
+    /**
+     * Each function for better loops for array-like structures.
+     */
     function each (arrayLike, callback) {
         Array.prototype.forEach.call(arrayLike, callback);
     }
 
     function buttonClicked (action) {
-
+        // Add one more number (or dot) to the displayed value.
         if ((NUMBERS + DOT).indexOf(action) !== -1) {
             if (action !== DOT || action === DOT && displayedValue.indexOf(DOT) === -1) {
                 if (newNumber) {
@@ -79,7 +102,7 @@
             }
         }
         else {
-
+            // Find the appropriate operator.
             each(operators, function (o) {
                 if (o.action === action) {
                     currentOperator = o;
@@ -87,22 +110,25 @@
             });
 
 
-            if (lastOperator && (currentOperator.binary || currentOperator.action === '=')) {
-                if (currentOperator.action === '=') {
+            // If current operator is binary or user clicked "=" button, run the previous operator.
+            if (lastOperator && (currentOperator.binary || currentOperator.finish)) {
+                if (currentOperator.finish) {
                     currentOperator = null;
                 }
-                result = lastOperator.callback(result, parseFloat(displayedValue));
-                displayedValue = result;
+                lastEvaluationResult = lastOperator.callback(lastEvaluationResult, parseFloat(displayedValue));
+                displayedValue = lastEvaluationResult;
                 lastOperator = null;
             }
+            // If current operator has only one argument, run the operator immediately.
             else if (!currentOperator.binary) {
-                result = currentOperator.callback(parseFloat(displayedValue));
-                displayedValue = result;
+                lastEvaluationResult = currentOperator.callback(parseFloat(displayedValue));
+                displayedValue = lastEvaluationResult;
                 lastOperator = null;
                 currentOperator = null;
             }
+            // Don't do anything.
             else {
-                result = parseFloat(displayedValue);
+                lastEvaluationResult = parseFloat(displayedValue);
             }
 
             newNumber = true;
@@ -111,25 +137,36 @@
         return displayedValue;
     }
 
+    /**
+     * Return the appropriate theme for the calculator.
+     */
     function getThemeClass(theme) {
         return theme === 'dark' ? 'dark-theme' : 'light-theme';
     }
 
 
     Polymer({
+        /**
+         * Return a result of last evaluation.
+         */
         getResult: function () {
-            return result;
+            return lastEvaluationResult;
         },
+        /**
+         * Return a current value from a display.
+         */
         getCurrentValue: function () {
             return displayedValue;
         },
+        /**
+         * Update a class of the container each time when the attibute is changed.
+         */
         themeChanged: function (oldValue, newValue) {
             var container = this.shadowRoot.querySelector('.container');
             container.classList.remove(getThemeClass(oldValue));
             container.classList.add(getThemeClass(newValue));
         },
         ready: function() {
-            console.log('ready');
             var elements = this.shadowRoot.querySelectorAll('.button');
             var display = this.shadowRoot.querySelector('.display');
             each(elements, function (button) {
