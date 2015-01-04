@@ -1,4 +1,4 @@
-polymer-playground
+Polymer playground
 ==================
 
 Personal playground for polymer elements. For now only calculator is implemented.

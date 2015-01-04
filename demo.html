@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <title>Polymer playground</title>
+    <script src="bower_components/webcomponentsjs/webcomponents.js"></script>
+    <link rel="import" href="elements/calculator/calculator.html" />
+    <style type="text/css">
+        body {
+            font-family: Helvetica Neue, Helvetica, Arial;
+        }
+        #swapTheme {
+            font-size: 16px;
+        }
+    </style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('swapTheme').addEventListener('click', function () {
+                var calculator = document.getElementById('calc');
+                if (calculator.getAttribute('theme') === 'dark') {
+                    calculator.setAttribute('theme', 'light');
+                }
+                else {
+                    calculator.setAttribute('theme', 'dark');
+                }
+            });
+        });
+    </script>
+
+</head>
+<body>
+    <x-calculator id="calc" theme="light"></x-calculator>
+    <button id="swapTheme">Swap theme</button>
+</body>
+</html>
