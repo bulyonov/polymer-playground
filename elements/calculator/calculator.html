@@ -1,0 +1,34 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html" />
+
+<polymer-element name="x-calculator">
+    <template>
+        <link rel="stylesheet" href="calculator.css" />
+        <div class="container">
+            <div class="display"></div>
+            <div class="actions">
+                <ul class="buttons numbers">
+                    <li class="button" x-action="1">1</li>
+                    <li class="button" x-action="2">2</li>
+                    <li class="button" x-action="3">3</li>
+                    <li class="button" x-action="4">4</li>
+                    <li class="button" x-action="5">5</li>
+                    <li class="button" x-action="6">6</li>
+                    <li class="button" x-action="7">7</li>
+                    <li class="button" x-action="8">8</li>
+                    <li class="button" x-action="9">9</li>
+                    <li class="button" x-action="0">0</li>
+                </ul>
+                <ul class="buttons operators">
+                    <li class="button" x-action=".">.</li>
+                    <li class="button" x-action="+">+</li>
+                    <li class="button" x-action="-">-</li>
+                    <li class="button" x-action="*">&times;</li>
+                    <li class="button" x-action="sqrt">&radic;</li>
+                    <li class="button" x-action="/">&divide;</li>
+                    <li class="button" x-action="=">=</li>
+                </ul>
+            </div>
+        </div>
+    </template>
+    <script src="calculator.js"></script>
+</polymer-element>

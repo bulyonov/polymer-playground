@@ -1,0 +1,58 @@
+:host {
+    font-family: Helvetica Neue, Helvetica, Arial;
+    font-size: 2rem;
+    color: #333;
+    border: 1px solid #ccc;
+    display: block;
+    height: 20%;
+    width: 20%;
+    overflow: hidden;
+    position: relative;
+}
+
+.display {
+    height: 2.4rem;
+    border: 1px solid #f0f0f0;
+    padding: 0.1rem;
+    text-align: right;
+}
+
+.buttons {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+.button {
+    box-shadow: 0 0 0 #333;
+    cursor: pointer;
+    display: block;
+    height: 20%;
+    float: left;
+    margin: 2px;
+    text-align: center;
+    width: 20%;
+}
+
+.button:hover {
+    background: #ccc;
+}
+
+button {
+    margin: 0;
+    padding: 0;
+}
+button:hover {
+    background: #ccc;
+    cursor: pointer;
+}
+
+.numbers {
+    float: left;
+    width: 60%;
+}
+
+.buttons {
+    overflow: hidden;
+}

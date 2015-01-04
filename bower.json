@@ -1,0 +1,19 @@
+{
+  "name": "polymer-playground",
+  "version": "0.0.0",
+  "homepage": "https://github.com/bulyonov/polymer-playground",
+  "authors": [
+    "Anton Bulyonov <anton@bulyonov.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#~0.5.2"
+  }
+}
