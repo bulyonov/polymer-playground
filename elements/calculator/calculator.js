@@ -41,11 +41,10 @@
     ];
 
     var result = 0;
-    var currentString = '';
+    var displayedValue = '0';
     var newNumber = true;
     var lastOperator = null;
     var currentOperator = null;
-    var themeClass = '';
 
     function each (arrayLike, callback) {
         Array.prototype.forEach.call(arrayLike, callback);
@@ -54,12 +53,12 @@
     function runAction (action) {
 
         if ((NUMBERS + DOT).indexOf(action) !== -1) {
-            if (action !== DOT || action === DOT && currentString.indexOf(DOT) === -1) {
+            if (action !== DOT || action === DOT && displayedValue.indexOf(DOT) === -1) {
                 if (newNumber) {
-                    currentString = '';
+                    displayedValue = '';
                     newNumber = false;
                 }
-                currentString += action;
+                displayedValue += action;
                 lastOperator = currentOperator;
             }
         }
@@ -71,28 +70,29 @@
                 }
             });
 
-            if (lastOperator) {
-                if (!lastOperator.binary) {
-                    result = lastOperator.callback(parseFloat(currentString));
-                }
-                else {
-                    result = lastOperator.callback(result, parseFloat(currentString));
 
+            if (lastOperator && (currentOperator.binary || currentOperator.action === '=')) {
+                if (currentOperator.action === '=') {
+                    currentOperator = null;
                 }
-                currentString = result;
-
+                result = lastOperator.callback(result, parseFloat(displayedValue));
+                displayedValue = result;
                 lastOperator = null;
             }
+            else if (!currentOperator.binary) {
+                result = currentOperator.callback(parseFloat(displayedValue));
+                displayedValue = result;
+                lastOperator = null;
+                currentOperator = null;
+            }
             else {
-                result = parseFloat(currentString);
+                result = parseFloat(displayedValue);
             }
 
             newNumber = true;
 
         }
-        console.log(lastOperator, currentOperator, currentString, result);
-        console.log(result);
-        return currentString;
+        return displayedValue;
     }
 
     function getThemeClass(theme) {
@@ -105,7 +105,7 @@
             return result;
         },
         getCurrentValue: function () {
-            return currentString;
+            return displayedValue;
         },
         themeChanged: function (oldValue, newValue) {
             var container = this.shadowRoot.querySelector('.container');
@@ -125,7 +125,7 @@
                     display.innerHTML = runAction(action);
                 });
             });
-            display.innerHTML = currentString;
+            display.innerHTML = displayedValue;
         }
     });
 })();
