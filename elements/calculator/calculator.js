@@ -45,6 +45,7 @@
     var newNumber = true;
     var lastOperator = null;
     var currentOperator = null;
+    var themeClass = '';
 
     function each (arrayLike, callback) {
         Array.prototype.forEach.call(arrayLike, callback);
@@ -94,6 +95,11 @@
         return currentString;
     }
 
+    function getThemeClass(theme) {
+        return theme === 'dark' ? 'dark-theme' : 'light-theme';
+    }
+
+
     Polymer({
         getResult: function () {
             return result;
@@ -101,7 +107,13 @@
         getCurrentValue: function () {
             return currentString;
         },
+        themeChanged: function (oldValue, newValue) {
+            var container = this.shadowRoot.querySelector('.container');
+            container.classList.remove(getThemeClass(oldValue));
+            container.classList.add(getThemeClass(newValue));
+        },
         ready: function() {
+            console.log('ready');
             var elements = this.shadowRoot.querySelectorAll('.button');
             var display = this.shadowRoot.querySelector('.display');
             each(elements, function (button) {
