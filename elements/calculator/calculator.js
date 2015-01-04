@@ -1,7 +1,23 @@
+/**
+ * There are two ways to implement a simple calculator:
+ * 1. Concatenate all input and use "eval" function to run the code when a new operator comes in.
+ * 2. Remember the previous result, existing input and operator and run them separately (seems to be safer).
+ * I picked the second way.
+ */
+
 (function () {
     var DOT = '.',
         NUMBERS = '0123456789';
 
+    /**
+     * The list of operators.
+     *
+     * All operators can have one or two arguments. Depending on the amount of arguments, the way how they are executed
+     * is different: binary operators are executed only after the second argument is added and the next operator is
+     * picked. Unary operators (e.g. sqrt) should be executed immediately.
+     *
+     * Thus, we need to work with these operators separately.
+     */
     var operators = [
         {
             action: '+',
@@ -50,7 +66,7 @@
         Array.prototype.forEach.call(arrayLike, callback);
     }
 
-    function runAction (action) {
+    function buttonClicked (action) {
 
         if ((NUMBERS + DOT).indexOf(action) !== -1) {
             if (action !== DOT || action === DOT && displayedValue.indexOf(DOT) === -1) {
@@ -122,7 +138,7 @@
                     return;
                 }
                 button.addEventListener('click', function () {
-                    display.innerHTML = runAction(action);
+                    display.innerHTML = buttonClicked(action);
                 });
             });
             display.innerHTML = displayedValue;
